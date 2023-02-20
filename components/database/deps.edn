@@ -1,0 +1,6 @@
+{:paths ["src" "resources"]
+
+ :deps {com.datomic/dev-local {:mvn/version "1.0.243"}}
+
+ :aliases {:test {:extra-paths ["test"]
+                  :extra-deps {}}}}

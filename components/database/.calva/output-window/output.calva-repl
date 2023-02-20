@@ -1,0 +1,7 @@
+; Jacking in...
+; Connecting using "undefined" project type.
+; You can make Calva auto-select this:
+; "calva.autoSelectReplConnectProjectType": "undefined"
+;   - See https://calva.io/connect/#auto-select-project-type
+;
+; Aborting jack-in. No project type selected.

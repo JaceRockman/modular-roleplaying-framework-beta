@@ -1,7 +1,17 @@
-{:aliases  {:dev {:extra-paths ["development/src"]
-                  :extra-deps {org.clojure/clojure {:mvn/version "1.11.1"}}}
+{:aliases  {
+            ; :create-database {}
 
-            :test {:extra-paths []}
+            ; :compile-cljs {}
+
+            :dev {:extra-paths ["development/src"]
+                  :extra-deps {poly/database {:local/root "components/database"}
+                               poly/server {:local/root "components/server"}
+                               io.pedestal/pedestal.log {:mvn/version "0.5.11-beta-1"}
+                               io.pedestal/pedestal.interceptor {:mvn/version "0.5.11-beta-1"}
+                               io.pedestal/pedestal.route {:mvn/version "0.5.11-beta-1"}}}
+
+            :test {:extra-paths ["components/database/src"
+                                 "components/server/src"]}
 
             :poly {:main-opts ["-m" "polylith.clj.core.poly-cli.core"]
                    :extra-deps {polyfy/polylith
