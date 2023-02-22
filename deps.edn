@@ -3,6 +3,8 @@
 
             ; :compile-cljs {}
 
+            ; :dev-repl {}
+
             :dev {:extra-paths ["development/src"]
                   :extra-deps {poly/database {:local/root "components/database"}
                                poly/server {:local/root "components/server"}

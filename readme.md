@@ -92,13 +92,22 @@ play offline.
 ## Examples
 
 https://github.com/milgra/tutorials/blob/master/full-stack-web-development-with-clojure-and-datomic.md
+
 https://gitlab.com/lambdatronic/clojure-webapp-template
+
 https://github.com/aliaksandr-s/prototyping-with-clojure
+
 https://github.com/learnuidev/grok (datomic backend)
+
 https://github.com/schnaq/cljs-re-frame-full-stack
+
 https://day8.github.io/re-frame/External-Resources/#examples-and-applications-using-re-frame
+
 https://github.com/sweet-tooth-clojure/character-sheet-example
+
 https://github.com/furkan3ayraktar/clojure-polylith-realworld-example-app
+
+https://github.com/DavidVujic/polylith-experiments
 
 ## Notes
 
@@ -119,6 +128,7 @@ a web application, a cli tool, etc. With that in mind, this is my tentative stru
 - web
 - mobile
 - api
+- fitbit
 
 #### Projects:
 - dice-roller
