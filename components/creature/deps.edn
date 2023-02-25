@@ -1,4 +1,6 @@
 {:paths ["src" "resources"]
- :deps {}
+ :deps {reagent/reagent {:mvn/version "1.2.0"}
+
+        poly/database {:local/root "../../components/database"}}
  :aliases {:test {:extra-paths ["test"]
                   :extra-deps {}}}}

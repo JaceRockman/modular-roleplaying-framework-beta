@@ -1,0 +1,15 @@
+{:deps {poly/web        {:local/root "../../bases/web"}
+        poly/database   {:local/root "../../components/database"}
+        poly/server     {:local/root "../../components/server"}
+        poly/creature   {:local/root "../../components/creature"}
+
+        org.clojure/clojure {:mvn/version "1.11.1"}
+        org.clojure/clojurescript {:mvn/version "1.11.60"}
+        org.clojure/tools.deps {:mvn/version "0.16.1264"}}
+
+ :aliases {:compile-cljs {:main-opts ["-m" "cljs.main" "-co" "compile-dev.cljs.edn" "-c"]}
+           :test {:extra-paths []
+                  :extra-deps  {}}
+           :build-project {:replace-deps {io.github.clojure/tools.build
+                                          {:git/tag "v0.9.3" :git/sha "e537cd1"}}
+                           :ns-default build}}}

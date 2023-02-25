@@ -1,16 +1,21 @@
 {:aliases  {
             ; :create-database {}
 
-            ; :compile-cljs {}
-
             ; :dev-repl {}
 
             :dev {:extra-paths ["development/src"]
-                  :extra-deps {poly/database {:local/root "components/database"}
-                               poly/server {:local/root "components/server"}
+                  :extra-deps {org.clojure/clojure {:mvn/version "1.11.1"}
+                               org.clojure/clojurescript {:mvn/version "1.11.60"}
+                               org.clojure/tools.deps {:mvn/version "0.16.1264"}
                                io.pedestal/pedestal.log {:mvn/version "0.5.11-beta-1"}
                                io.pedestal/pedestal.interceptor {:mvn/version "0.5.11-beta-1"}
-                               io.pedestal/pedestal.route {:mvn/version "0.5.11-beta-1"}}}
+                               io.pedestal/pedestal.route {:mvn/version "0.5.11-beta-1"}
+                               reagent/reagent {:mvn/version "1.2.0"}
+
+                               poly/web {:local/root "bases/web"}
+                               poly/database {:local/root "components/database"}
+                               poly/server {:local/root "components/server"}
+                               poly/creature {:local/root "components/creature"}}}
 
             :test {:extra-paths ["components/database/src"
                                  "components/server/src"]}

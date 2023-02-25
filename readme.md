@@ -8,8 +8,27 @@ using.
 ## Current State
 
 I have a basic dev-local datomic database setup for some example creatures and
-I have a simple server with very few routes. Now that the basics are in place,
-though, I am hoping to make more steady progress moving forward.
+I have a simple server with very few routes.
+
+I have the creature component using mock data and generating reagent-style
+hiccup with that data. This can be compiled by bases/web and display as html in the
+cljs browser repl. So my checklist for now is:
+
+Database
+- Clean up the initialization and connection functions
+- Move the schemas and queries to their own components (I think?)
+
+Server
+- Set up to be a generic server that can be given an app state (I think?)
+- Set up most of the actual server functionality in bases/web so that it can receive the request and output the right clojurescript stuff
+- Merge the generic server functionality in the component with the bases/web server functionality
+
+Clojurescript
+- Allow the server to control the compiled clojurescript code
+
+General
+- Figure out how to handle all of the state with Mount so that I can have hotloading
+- Figure out how to use the cli commands to connect to the database, create a server, and compile the clojurescript
 
 # Project Structure
 
@@ -105,6 +124,8 @@ https://day8.github.io/re-frame/External-Resources/#examples-and-applications-us
 
 https://github.com/sweet-tooth-clojure/character-sheet-example
 
+https://github.com/seancorfield/usermanager-example/tree/polylith
+
 https://github.com/furkan3ayraktar/clojure-polylith-realworld-example-app
 
 https://github.com/DavidVujic/polylith-experiments
@@ -113,16 +134,30 @@ https://github.com/DavidVujic/polylith-experiments
 
 ### Polylith Architecture Planning
 
-Polylith applications are built out of Projects which are collections of Bases and Components.
-Components consist of a core piece of functionality and an interface for utilizing that
-functionality. Bases consist of a collection of Components and an interface for interacting
-with that underlying functionality that is accessible from the outside world, like an api,
-a web application, a cli tool, etc. With that in mind, this is my tentative structure for the beta:
+My current understanding is Components consist of a core piece of functionality
+and an interface for utilizing that functionality. Bases consist of a collection
+of Components and a public API for interacting with that underlying functionality
+from the outside world. Bases may represent a web application, a cli tool, an api, etc.
+Projects are a collection of usually one base and multiple components and a build script
+that defines what deployable artifact is being created, like an uberjar, lambda
+function, REST API, library, tool, etc.
+
+The tricky thing right now is that polylith isn't built with clojurescript in mind,
+so I am trying to figure out how I'm going to implement the frontend in the polylith context.
+Right now, I have the bases/web which has an alias in its deps.edn for compiling the
+clojurescript code found in src/beta/web/main.cljs. This can be run in the cljs browser
+repl and it displays the reagent hiccup as html. The puzzle I am trying to work out
+now is how bases/web can connect to a database, start up a web server, compile
+the clojurescript code, and hook it all together.
+
+
+### Tentative Application Structure
 
 #### Components:
 - database
 - server
 - creature
+- other game-concept components (dice, worlds, resources, etc.)
 
 #### Bases:
 - web
@@ -132,6 +167,6 @@ a web application, a cli tool, etc. With that in mind, this is my tentative stru
 
 #### Projects:
 - dice-roller
-- character-sheet
+- character-sheet (I will probably start with this)
 - rulebook
 - world

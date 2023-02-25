@@ -1,0 +1,7 @@
+{:main          "beta.web.main"
+ :output-dir    "resources/out"
+ :output-to     "resources/main.js"
+ :asset-path    "resources/out"
+ :source-map    true
+ :optimizations :none
+ :pretty-print  false}
