@@ -3,7 +3,7 @@
 
 (defn start-dev
   []
-  (server/run-dev))
+  (server/start-dev))
 
 (defn stop-dev
   []

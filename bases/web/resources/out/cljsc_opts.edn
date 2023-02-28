@@ -1,0 +1,1 @@
+{:output-dir "resources/out", :optimizations :none, :aot-cache true, :output-to "resources/main.js", :asset-path "resources/out", :browser-repl true, :source-map true, :main "beta.web.main", :pretty-print false}

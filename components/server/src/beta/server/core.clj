@@ -1,8 +1,7 @@
 (ns beta.server.core
   (:gen-class)
   (:require [io.pedestal.http :as http]
-            [io.pedestal.http.route :as route]
-            [beta.creature.interface :as creature]))
+            [io.pedestal.http.route :as route]))
 
 (def server
   "This makes it easier to stop and start the server. Eventually this will
@@ -16,14 +15,13 @@
 
 (defn page
   [request]
-  (let [name (get-in request [:params :name] "World")]
+  (let [name (get-in request [:params :name] "Empty")]
     {:status 200 :body (str "Page " name "!\n")}))
 
 (def routes
   (route/expand-routes
    #{["/greet" :get hello-world :route-name :greet]
-     ["/page" :get page :route-name :page]
-     ["/creature" :get creature/creature-sheet :creature]}))
+     ["/page" :get page :route-name :page]}))
 
 (def service {:env                 :prod
               ::http/routes        routes
