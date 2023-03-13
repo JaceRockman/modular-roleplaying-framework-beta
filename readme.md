@@ -8,11 +8,13 @@ using.
 ## Current State
 
 I have a basic dev-local datomic database setup for some example creatures and
-I have a simple server with very few routes.
+I have a simple server with very few routes. I have a front end server set up
+that is connected to the backend through the simple server, but so far it isn't
+serving anything from the database. Instead, I have the creature component using mock
+data and generating reagent-style hiccup with that data. This can be compiled
+by bases/web and display as html in the cljs browser repl.
 
-I have the creature component using mock data and generating reagent-style
-hiccup with that data. This can be compiled by bases/web and display as html in the
-cljs browser repl. So my checklist for now is:
+So my checklist for now is:
 
 Database
 - Clean up the initialization and connection functions
@@ -56,18 +58,11 @@ I think this mostly just works out of the box. Might need other tools in additio
 
 Still just learning the basics of Datomic, but it’s starting to make sense.
 
-### Server ([Ring-Jetty9-Adapter](https://github.com/sunng87/ring-jetty9-adapter) or [Pedestal](https://github.com/pedestal/pedestal))
+### Server & Routing ([Pedestal](https://github.com/pedestal/pedestal))
 
-The regular Ring can't utilize anything past Jetty 9, so this works for Jetty 11.
-If I decide to go with Pedestal, it would also replace Reitit.
-[A good breakdown](https://practical.li/clojure-web-services/app-servers/overview.html) of web servers.
-
-### Routing ([Reitit](https://github.com/metosin/reitit))
-
-One of the common routing libraries for Clojure apps. My understanding is that
-Reitit is a bit more flexible where Compojure is more streamlined. If I ultimately
-decide to go with Pedestal, however, then I will be doing the routing through
-that instead.
+Pedestal is built by Cognitect, so I am going to learn it since I was having
+a hard time deciding which Server/Routing stuff I wanted to use and everything else
+is as Clojure-y as it can get.
 
 ### Authentication ([Buddy](https://github.com/funcool/buddy))
 
@@ -81,11 +76,13 @@ priority right now. I probably won't even implement this in the beta.
 
 ## Frontend ([Clojurescript](https://clojurescript.org/))
 
-This is very similar to Clojure except it compiles to Javascript instead of Java.
+This is similar to Clojure except it compiles to Javascript instead of Java.
 
-### State Management ([Re-frame](https://github.com/day8/re-frame))
+###
 
-This is a solid state management framework for Clojure frontend.
+### State Management ([Kee-frame](https://github.com/ingesolvoll/kee-frame) [Re-frame](https://github.com/day8/re-frame))
+
+This is a really good combo for a state management framework for Clojure frontend.
 
 ### React ([Reagent](https://github.com/reagent-project/reagent))
 
@@ -99,12 +96,12 @@ structures.
 ### Interop ([Transit-cljs](https://github.com/cognitect/transit-cljs))
 
 This could be good for exporting json/edn/other data files if I want to interop
-ith sites like Alchemy RPG or Roll20.
+with sites like Alchemy RPG or Roll20.
 
 ### Local Instances ([Datascript](https://github.com/tonsky/datascript))
 
 I have to look into this some more, but it could potentially be a good way to
-play offline.
+use the application offline.
 
 
 

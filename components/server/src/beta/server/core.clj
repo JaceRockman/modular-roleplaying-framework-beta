@@ -10,24 +10,32 @@
 
 (defn hello-world
   [request]
-  (let [name (get-in request [:params :name] "World")]
+  (let [name (get-in request [:path-params :name] "World")]
     {:status 200 :body (str "Hello " name "!\n")}))
 
 (defn page
   [request]
-  (let [name (get-in request [:params :name] "Empty")]
-    {:status 200 :body (str "Page " name "!\n")}))
+  (let [page-no (get-in request [:path-params :page] "Empty")]
+    {:status 200 :body (str "Page " page-no "!\n")}))
+
+(defn creature
+  [request]
+  (let [id (get-in request [:path-params :id] "Empty")]
+    (println request)
+    {:status 200 :body id}))
 
 (def routes
   (route/expand-routes
    #{["/greet" :get hello-world :route-name :greet]
-     ["/page" :get page :route-name :page]}))
+     ["/page" :get page :route-name :page]
+     ["/creature/:id" :get creature :route-name :creature]}))
 
 (def service {:env                 :prod
               ::http/routes        routes
               ::http/resource-path "/public"
               ::http/type          :jetty
-              ::http/port          8080})
+              ::http/port          8000
+              ::http/allowed-origins {:creds true :allowed-origins ["http://localhost/9000"]}})
 
 (defonce runnable-service (http/create-server service))
 
@@ -48,7 +56,7 @@
                ::http/allowed-origins {:creds true :allowed-origins (constantly true)}})
       ;; Wire up interceptor chains
        http/default-interceptors
-       http/dev-interceptors
+      ;;  http/dev-interceptors
        http/create-server
        http/start)))
 

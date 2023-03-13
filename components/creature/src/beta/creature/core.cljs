@@ -22,7 +22,7 @@
 
 (defn creature-component [creature-data]
   [:div {:id (:db/id creature-data)}
-   [:h (:creature/name creature-data)]
+   [:div (:creature/name creature-data)]
    [:p "Races: " (interpose ", " (map #(:ident %) (:creature/race creature-data)))]
    [:p "Domains: " (interpose ", " (map #(:name %) (:creature/domains creature-data)))]])
 
