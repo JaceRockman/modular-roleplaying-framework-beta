@@ -21,10 +21,10 @@
      [{:name "Physical"} {:name "Spiritual"} {:name "Mental"} {:name "Social"}]}))
 
 (defn creature-component [creature-data]
-  [:div {:id (:db/id creature-data)}
+  [:div {:id (:creature/id creature-data)}
    [:div (:creature/name creature-data)]
-   [:p "Races: " (interpose ", " (map #(:ident %) (:creature/race creature-data)))]
-   [:p "Domains: " (interpose ", " (map #(:name %) (:creature/domains creature-data)))]])
+   [:p "Races: " (interpose ", " (map #(:db/ident %) (:creature/race creature-data)))]
+   [:p "Domains: " (interpose ", " (map #(:domain/name %) (:creature/domains creature-data)))]])
 
 (defn all-creatures [creature-list]
   [:div

@@ -1,1 +1,0 @@
-(ns beta.database.interface)

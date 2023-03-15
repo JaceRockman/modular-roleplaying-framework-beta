@@ -1,8 +1,8 @@
 (ns beta.database.core
   (:require [datomic.client.api :as d]
             [beta.database.schema :as schema]
-            [beta.database.domains :as domains]
-            [beta.database.creatures :as creatures]))
+            [beta.database.interface.domains :as domains]
+            [beta.database.interface.creatures :as creatures]))
 
 #_"A lot of this will need a lot of cleanup, I just wanted to get it into a working
 state for now so that I can keep testing things out."
@@ -15,7 +15,7 @@ state for now so that I can keep testing things out."
 (defn db [] (d/db conn))
 
 (defn initialize-db
-  []
+  [conn db]
   (d/transact conn {:tx-data schema/merged-schemas})
   (d/transact conn {:tx-data domains/default-domains})
   (d/transact conn {:tx-data creatures/creature-races})
@@ -26,7 +26,7 @@ state for now so that I can keep testing things out."
   (d/transact conn {:tx-data (creatures/example-creatures init-domain-entities)}))
 
 (comment
-  (initialize-db)
+  (initialize-db conn (db))
   (creatures/get-all-creatures (db) creatures/pull-full-creature))
 
 (comment

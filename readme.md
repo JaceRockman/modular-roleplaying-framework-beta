@@ -7,28 +7,15 @@ using.
 
 ## Current State
 
-I have a basic dev-local datomic database setup for some example creatures and
-I have a simple server with very few routes. I have a front end server set up
-that is connected to the backend through the simple server, but so far it isn't
-serving anything from the database. Instead, I have the creature component using mock
-data and generating reagent-style hiccup with that data. This can be compiled
-by bases/web and display as html in the cljs browser repl.
+I have a very basic frontend UI in bases/web that uses kee-frame and re-frame to
+determine which views to display based on the url as well as which data to query
+from the database for that url. If the user navigates to a url, it makes an http
+request to the backend server in order to populate the app state. The backend
+server has a simple interface for returning all of the creatures in the database
+which the frontend uses to populate some basic character desriptions.
 
-So my checklist for now is:
-
-Database
-- Clean up the initialization and connection functions
-- Move the schemas and queries to their own components (I think?)
-
-Server
-- Set up to be a generic server that can be given an app state (I think?)
-- Set up most of the actual server functionality in bases/web so that it can receive the request and output the right clojurescript stuff
-- Merge the generic server functionality in the component with the bases/web server functionality
-
-Clojurescript
-- Allow the server to control the compiled clojurescript code
-
-General
+Next Goals:
+- Build out content for character sheets
 - Figure out how to handle all of the state with Mount so that I can have hotloading
 - Figure out how to use the cli commands to connect to the database, create a server, and compile the clojurescript
 
@@ -133,9 +120,10 @@ https://github.com/DavidVujic/polylith-experiments
 
 My current understanding is Components consist of a core piece of functionality
 and an interface for utilizing that functionality. Bases consist of a collection
-of Components and a public API for interacting with that underlying functionality
-from the outside world. Bases may represent a web application, a cli tool, an api, etc.
-Projects are a collection of usually one base and multiple components and a build script
+of Bases and a valid selection of Components to be used by those bases and a public
+interface for interacting with that underlying functionality from the outside world.
+This could be an API, a CLI tool, a mobile app, a web app, etc. Projects are a
+collection of usually one base and multiple components and a build script
 that defines what deployable artifact is being created, like an uberjar, lambda
 function, REST API, library, tool, etc.
 
@@ -143,9 +131,7 @@ The tricky thing right now is that polylith isn't built with clojurescript in mi
 so I am trying to figure out how I'm going to implement the frontend in the polylith context.
 Right now, I have the bases/web which has an alias in its deps.edn for compiling the
 clojurescript code found in src/beta/web/main.cljs. This can be run in the cljs browser
-repl and it displays the reagent hiccup as html. The puzzle I am trying to work out
-now is how bases/web can connect to a database, start up a web server, compile
-the clojurescript code, and hook it all together.
+repl and it displays the reagent hiccup as html.
 
 
 ### Tentative Application Structure

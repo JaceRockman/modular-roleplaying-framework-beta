@@ -255,6 +255,7 @@ goog.addDependency("../kee_frame/router.js", ['kee_frame.router'], ['kee_frame.i
 goog.addDependency("../kee_frame/legacy.js", ['kee_frame.legacy'], ['re_chain.core', 'cljs.core', 'kee_frame.event_logger', 're_frame.core']);
 goog.addDependency("../kee_frame/core.js", ['kee_frame.core'], ['re_frame.interop', 'kee_frame.log', 'kee_frame.state', 'expound.alpha', 'cljs.core', 'kee_frame.router', 'kee_frame.spec', 'kee_frame.legacy', 'cljs.spec.alpha', 're_frame.core']);
 goog.addDependency("../reagent/dom/client.js", ['reagent.dom.client'], ['reagent.impl.util', 'reagent.impl.protocols', 'react_dom.client', 'cljs.core', 'goog.object', 'reagent.impl.template', 'reagent.impl.batching', 'react']);
+goog.addDependency("../clojure/edn.js", ['clojure.edn'], ['cljs.core', 'cljs.reader']);
 goog.addDependency("../beta/creature/core.js", ['beta.creature.core'], ['cljs.core']);
 goog.addDependency("../beta/creature/interface.js", ['beta.creature.interface$'], ['beta.creature.core', 'cljs.core']);
-goog.addDependency("../beta/web/main.js", ['beta.web.main'], ['ajax.core', 'kee_frame.core', 're_frame.core', 'day8.re_frame.http_fx', 'reagent.dom.client', 'beta.creature.interface$', 'cljs.core']);
+goog.addDependency("../beta/web/main.js", ['beta.web.main'], ['ajax.core', 'kee_frame.core', 're_frame.core', 'day8.re_frame.http_fx', 'reagent.dom.client', 'clojure.edn', 'beta.creature.interface$', 'cljs.core']);

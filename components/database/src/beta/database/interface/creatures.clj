@@ -1,6 +1,6 @@
-(ns beta.database.creatures
+(ns beta.database.interface.creatures
   (:require [datomic.client.api :as d]
-            [beta.database.domains :as domains]))
+            [beta.database.interface.domains :as domains]))
 
 ;; This will probably not live in the database component
 
@@ -77,6 +77,25 @@
             db
             pattern
             creature-name)))
+
+
+(defn get-creature-by-id
+  "Returns creature information for a creature with a given id
+
+  Arguments:
+   - db connection
+   - Pull Pattern for a creature entity
+   - An Int that matches on the :creature/id value
+  Returns:
+   - creature entity data structured with the given pull pattern"
+  [db pattern creature-id]
+  (map first
+       (d/q '{:find [(pull ?eid pattern)]
+              :in [$ pattern ?creature-id]
+              :where [[?eid :creature/id ?creature-id]]}
+            db
+            pattern
+            (parse-uuid creature-id))))
 
 ;; Transactions
 ;; Transactions accumulate datoms to the databse

@@ -1,4 +1,4 @@
-(ns beta.database.resources)
+(ns beta.database.interface.resources)
 
 ;; This will probably not be living in the database component forever.
 

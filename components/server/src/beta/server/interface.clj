@@ -12,3 +12,5 @@
 (defn restart-dev
   []
   (server/restart-dev))
+
+(start-dev)

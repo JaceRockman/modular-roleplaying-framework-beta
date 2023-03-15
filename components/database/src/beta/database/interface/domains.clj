@@ -1,4 +1,4 @@
-(ns beta.database.domains)
+(ns beta.database.interface.domains)
 
 ;; This probably will not live the in the database component
 

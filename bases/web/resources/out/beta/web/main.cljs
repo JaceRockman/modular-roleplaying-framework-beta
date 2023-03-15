@@ -4,9 +4,8 @@
             [re-frame.core :as rf]
             [day8.re-frame.http-fx]
             [reagent.dom.client :as rdom]
-            [beta.creature.interface :as creature]
-  ;  [mount.core :as mount :refer [defstate]]
-            ))
+            [clojure.edn :as edn]
+            [beta.creature.interface :as creature]))
 
 (kf/reg-event-fx
  :go-to-page
@@ -15,8 +14,14 @@
 
 (kf/reg-event-fx
  :open-creature-sheet
+ (fn [db [creature-id]]
+   {:db (assoc db :active-creature creature-id)
+    :navigate-to [:creature {:id creature-id}]}))
+
+(kf/reg-event-fx
+ :open-creatures-menu
  (fn [_ [creature-id]]
-   {:navigate-to [:creature {:id creature-id}]}))
+   {:navigate-to [:creatures]}))
 
 (kf/reg-event-fx
  :page-load-failure
@@ -33,13 +38,32 @@
  (fn [db _]
    (:active-creature db)))
 
+(rf/reg-sub
+ :active-creature-data
+ (fn [db _]
+   (let [creatures (:creatures db)
+         active-creature-id (:active-creature db)]
+     (first (filter #(= (:creature/id %) active-creature-id) creatures)))))
+
+(rf/reg-sub
+ :creatures
+ (fn [db _]
+   (:creatures db)))
 
 (def initial-db {:some-data "data"})
 
 (def routes
   [["/" :home]
    ["/page/:page-no" :page]
+   ["/creatures" :creatures]
    ["/creature/:id" :creature]])
+
+(defn creature-button [creature-data]
+  (let [creature-id (:creature/id creature-data)
+        creature-name (:creature/name creature-data)]
+    [:button {:key creature-id
+              :on-click #(rf/dispatch [:open-creature-sheet creature-id])}
+     creature-name]))
 
 (defn app []
   (kf/case-route
@@ -47,18 +71,16 @@
      (-> route :data :name))
    :home [:div
           [:button {:on-click #(rf/dispatch [:go-to-page 1])} "Page 1"]
-          [:button {:on-click #(rf/dispatch [:open-creature-sheet 74766790688878])} "Aleksander"]
-          [:a {:href (kf/path-for [:page {:page-no 1}])} "Page 1"]
-          [:a {:href (kf/path-for [:page {:page-no 2}])} "Page 2"]]
+          [:button {:on-click #(rf/dispatch [:go-to-page 2])} "Page 2"]
+          [:button {:on-click #(rf/dispatch [:open-creatures-menu])} "Creatures"]]
    :page [:div
           [:div {:style {:color (if (deref (rf/subscribe [:page-load-status])) "green" "red")}} "Page Stuff"]
           (if (not (deref (rf/subscribe [:page-load-status])))
             [:div
              [:a {:href (kf/path-for [:home])} "Home"]])]
-   :creature (do (println "Creature ID: " (deref (rf/subscribe [:active-creature])))
-                 (creature/creature-display 74766790688878
-                  ; (deref (rf/subscribe [:active-creature]))
-                  ))
+   :creatures [:div (map creature-button (deref (rf/subscribe [:creatures])))]
+   :creature (do (println (deref (rf/subscribe [:active-creature-data])))
+(creature/creature-display (deref (rf/subscribe [:active-creature-data]))))
    [:div "Page not Found"]))
 
 (defn main! []
@@ -67,27 +89,23 @@
               :root-component [app]}))
 
 
-(kf/reg-controller :creature
+(kf/reg-controller :creatures
                    {:params (fn [route-data]
-                              (when (-> route-data :data :name (= :creature))
-                                (-> route-data
-                                    :path-params
-                                    :id)))
-                    :start  (fn [ctx id] [:creature/load id])})
+                              (-> route-data :data :name (= :creatures)))
+                    :start  (fn [ctx _] [:creatures/load])})
 
-(kf/reg-chain :creature/load
+(kf/reg-chain :creatures/load
 
-              (fn [ctx [id]]
+              (fn [ctx _]
                 {:http-xhrio {:method          :get
-                              :uri             (str "http://localhost:8000/creature/" id)
+                              :uri             "http://localhost:8000/creatures"
                               :timeout         8000
                               :format          (ajax/json-request-format)
                               :response-format (ajax/text-response-format)
                               :on-failure      [:page-load-failure]}})
 
-              (fn [{:keys [db]} [_ creature-id]]
-                (println (str "Creature: " creature-id))
-                {:db (assoc db :active-creature creature-id)})) ; Seems like this isn't happening
+              (fn [{:keys [db]} [creature-data]]
+                {:db (assoc db :creatures (edn/read-string creature-data))}))
 
 (kf/reg-controller :page
                    {:params (fn [route-data]
@@ -107,25 +125,7 @@
                               :response-format (ajax/text-response-format)
                               :on-failure      [:page-load-failure]}})
 
-              (fn [{:keys [db]} [_ page-no]]
+              (fn [{:keys [db]} [page-no]]
                 {:db (assoc db :page-load-success true)}))
 
 (main!)
-
-
-; (defn simple-render [component]
-;   (rdom/render
-;    (rdom/create-root
-;     (.getElementById js/document "app"))
-;    [component]))
-
-; (simple-render creature/creature-list)
-
-
-;; I don't have the mount stuff working yet, but I think this is kind of what
-;; it will look like
-
-; (mount/in-cljc-mode)
-
-; (defstate app
-;   :start (simple-render creature/creature-list))

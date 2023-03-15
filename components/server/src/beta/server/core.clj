@@ -1,7 +1,8 @@
 (ns beta.server.core
-  (:gen-class)
-  (:require [io.pedestal.http :as http]
-            [io.pedestal.http.route :as route]))
+  (:require [beta.database.interface.creatures :as creatures] [beta.database.interface.general :as db-interface]
+            [io.pedestal.http :as http]
+            [io.pedestal.http.route :as route])
+  (:gen-class))
 
 (def server
   "This makes it easier to stop and start the server. Eventually this will
@@ -18,17 +19,15 @@
   (let [page-no (get-in request [:path-params :page] "Empty")]
     {:status 200 :body (str "Page " page-no "!\n")}))
 
-(defn creature
+(defn creatures
   [request]
-  (let [id (get-in request [:path-params :id] "Empty")]
-    (println request)
-    {:status 200 :body id}))
+  {:status 200 :body (creatures/get-all-creatures (db-interface/db) creatures/pull-full-creature)})
 
 (def routes
   (route/expand-routes
    #{["/greet" :get hello-world :route-name :greet]
      ["/page" :get page :route-name :page]
-     ["/creature/:id" :get creature :route-name :creature]}))
+     ["/creatures" :get creatures :route-name :creatures]}))
 
 (def service {:env                 :prod
               ::http/routes        routes
@@ -56,7 +55,7 @@
                ::http/allowed-origins {:creds true :allowed-origins (constantly true)}})
       ;; Wire up interceptor chains
        http/default-interceptors
-      ;;  http/dev-interceptors
+       http/dev-interceptors
        http/create-server
        http/start)))
 
