@@ -9,6 +9,14 @@
                      {:db/ident :race/human}
                      {:db/ident :race/dwarf}])
 
+(defn init-creature
+  [creator-entity-id domain-entity-ids]
+  (println domain-entity-ids)
+  [{:creature/id (java.util.UUID/randomUUID)
+    :creature/creator creator-entity-id
+    :creature/name "New Creature"
+    :creature/domains domain-entity-ids}])
+
 (defn example-creatures
   [default-domain-entities]
   [{:creature/id (java.util.UUID/randomUUID)
@@ -27,15 +35,14 @@
 (defn new-creature-defaults
   "A transaction schema for a new creature"
   []
-  {:creature/id (java.util.UUID/randomUUID)
-   :creature/domains domains/default-domains})
+  {:creature/id (java.util.UUID/randomUUID)})
 
 
 ;; Pull Patterns
 ;; Pull patterns define the structure of the data to be returned given an entity id
 
 (def pull-full-creature
-  ['* :creature/race {:creature/domains [:domain/name]}])
+  ['* :creature/race {:creature/domains ['*]}])
 
 (def pull-creature-name
   [:creature/name])
@@ -103,8 +110,7 @@
 (defn create-creature
   "Takes transaction data for a creature and adds a new creature to the database"
   [conn creature-tx-data]
-   (d/transact conn {:tx-data [(merge creature-tx-data {:creature/id (java.util.UUID/randomUUID)
-                                                       :creature/domains domains/default-domains})]}))
+   (d/transact conn {:tx-data [(merge creature-tx-data {:creature/id (java.util.UUID/randomUUID)})]}))
 
 (defn update-creature
   "Takes a creature uuid and updates it with the provided transaction data"

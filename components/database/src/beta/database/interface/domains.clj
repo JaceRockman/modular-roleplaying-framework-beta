@@ -2,66 +2,81 @@
 
 ;; This probably will not live the in the database component
 
-(def default-domains [{:domain/id (java.util.UUID/randomUUID)
-                       :domain/name "Physical"
-                       :domain/resource-type-title "Equipment"
-                       :domain/initiation-title "Coordination"
-                       :domain/initiation-value 1
-                       :domain/reaction-title "Reflexes"
-                       :domain/reaction-value 1
-                       :domain/continuation-title "Endurance"
-                       :domain/continuation-value 1
-                       :domain/dominance-title "Might"
-                       :domain/dominance-value 6
-                       :domain/competence-title "Finesse"
-                       :domain/competence-value 6
-                       :domain/resilience-title "Fortitude"
-                       :domain/resilience-value 6}
 
-                      {:domain/id (java.util.UUID/randomUUID)
-                       :domain/name "Spiritual"
-                       :domain/resource-type-title "Trait"
-                       :domain/initiation-title "Exertion"
-                       :domain/initiation-value 1
-                       :domain/reaction-title "Instinct"
-                       :domain/reaction-value 1
-                       :domain/continuation-title "Perseverance"
-                       :domain/continuation-value 1
-                       :domain/dominance-title "Willpower"
-                       :domain/dominance-value 6
-                       :domain/competence-title "Discipline"
-                       :domain/competence-value 6
-                       :domain/resilience-title "Tenacity"
-                       :domain/resilience-value 6}
+(defn default-domain-names
+  [[physical-icon spiritual-icon mental-icon social-icon]]
+  [{:domain-names/id (java.util.UUID/randomUUID)
+    :domain-names/name "Physical"
+    :domain-names/icon physical-icon
+    :domain-names/resource-type-title "Equipment"
+    :domain-names/initiation-title "Coordination"
+    :domain-names/reaction-title "Reflexes"
+    :domain-names/continuation-title "Endurance"
+    :domain-names/dominance-title "Might"
+    :domain-names/competence-title "Finesse"
+    :domain-names/resilience-title "Fortitude"}
 
-                      {:domain/id (java.util.UUID/randomUUID)
-                       :domain/name "Mental"
-                       :domain/resource-type-title "Expertise"
-                       :domain/initiation-title "Concentration"
-                       :domain/initiation-value 1
-                       :domain/reaction-title "Recognition"
-                       :domain/reaction-value 1
-                       :domain/continuation-title "Comprehension"
-                       :domain/continuation-value 1
-                       :domain/dominance-title "Intellect"
-                       :domain/dominance-value 6
-                       :domain/competence-title "Focus"
-                       :domain/competence-value 6
-                       :domain/resilience-title "Stability"
-                       :domain/resilience-value 6}
+   {:domain-names/id (java.util.UUID/randomUUID)
+    :domain-names/name "Spiritual"
+    :domain-names/icon spiritual-icon
+    :domain-names/resource-type-title "Trait"
+    :domain-names/initiation-title "Exertion"
+    :domain-names/reaction-title "Instinct"
+    :domain-names/continuation-title "Perseverance"
+    :domain-names/dominance-title "Willpower"
+    :domain-names/competence-title "Discipline"
+    :domain-names/resilience-title "Tenacity"}
 
-                      {:domain/id (java.util.UUID/randomUUID)
-                       :domain/name "Social"
-                       :domain/resource-type-title "Affiliation"
-                       :domain/initiation-title "Persuasion"
-                       :domain/initiation-value 1
-                       :domain/reaction-title "Insight"
-                       :domain/reaction-value 1
-                       :domain/continuation-title "Connections"
-                       :domain/continuation-value 1
-                       :domain/dominance-title "Presence"
-                       :domain/dominance-value 6
-                       :domain/competence-title "Wit"
-                       :domain/competence-value 6
-                       :domain/resilience-title "Poise"
-                       :domain/resilience-value 6}])
+   {:domain-names/id (java.util.UUID/randomUUID)
+    :domain-names/name "Mental"
+    :domain-names/icon mental-icon
+    :domain-names/resource-type-title "Expertise"
+    :domain-names/initiation-title "Concentration"
+    :domain-names/reaction-title "Recognition"
+    :domain-names/continuation-title "Comprehension"
+    :domain-names/dominance-title "Intellect"
+    :domain-names/competence-title "Focus"
+    :domain-names/resilience-title "Stability"}
+
+   {:domain-names/id (java.util.UUID/randomUUID)
+    :domain-names/name "Social"
+    :domain-names/icon social-icon
+    :domain-names/resource-type-title "Affiliation"
+    :domain-names/initiation-title "Persuasion"
+    :domain-names/reaction-title "Insight"
+    :domain-names/continuation-title "Connections"
+    :domain-names/dominance-title "Presence"
+    :domain-names/competence-title "Wit"
+    :domain-names/resilience-title "Poise"}])
+
+
+(defn default-domain-values [] [{:domain-value/id (java.util.UUID/randomUUID)
+                                 :domain-value/damage [0 0]
+                                 :domain-value/initiation 1
+                                 :domain-value/reaction 1
+                                 :domain-value/continuation 1
+                                 :domain-value/dominance 6
+                                 :domain-value/competence 6
+                                 :domain-value/resilience 6}])
+
+(def default-domain-icons [{:icon/id (java.util.UUID/randomUUID)
+                            :icon/name "Physical"
+                            :icon/source "/resources/database/physical.ico"}
+
+                           {:icon/id (java.util.UUID/randomUUID)
+                            :icon/name "Spiritual"
+                            :icon/source "/resources/database/spiritual.ico"}
+
+                           {:icon/id (java.util.UUID/randomUUID)
+                            :icon/name "Mental"
+                            :icon/source "/resources/database/mental.ico"}
+
+                           {:icon/id (java.util.UUID/randomUUID)
+                            :icon/name "Social"
+                            :icon/source "/resources/database/social.ico"}])
+
+(defn default-domains [domain-names domain-values]
+  (let [domain-maker (fn [name value]
+                       {:domain/names name
+                        :domain/values value})]
+    (vec (map domain-maker domain-names domain-values))))
