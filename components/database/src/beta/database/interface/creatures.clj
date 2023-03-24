@@ -42,7 +42,13 @@
 ;; Pull patterns define the structure of the data to be returned given an entity id
 
 (def pull-full-creature
-  ['* :creature/race {:creature/domains ['*]}])
+  ['*
+   :creature/race
+   {:creature/domains
+    [{:domain/names
+      ['* {:domain-names/icon [:icon/source]}]
+      :domain/values
+      ['*]}]}])
 
 (def pull-creature-name
   [:creature/name])
@@ -68,7 +74,7 @@
             pattern)))
 
 (defn get-creature-by-name
-  "Returns creature information for all creature's with a given name
+  "Returns creature information for all creatures with a given name
 
   Arguments:
    - db connection
